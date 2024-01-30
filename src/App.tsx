@@ -1,15 +1,103 @@
 import { useState } from "react";
 import logo from "./assets/FA_DIGICAMP_LOGO_WHITE.png";
 
+type StepListType = {
+  id: number;
+  title: string;
+  alt: string;
+  desc: string;
+}[];
+
+type RegsiterDataType = {
+  fullname: string | null;
+  email: string | null;
+  dob: string | null;
+  street: string | null;
+  city: string | null;
+  province: string | null;
+  username: string | null;
+  password: string | null;
+};
+
 const stepList = [
-  { id: 1, title: "personal information" },
-  { id: 2, title: "address information" },
-  { id: 3, title: "account information" },
+  {
+    id: 1,
+    title: "personal information",
+    alt: "please provide your personal information",
+    desc: "please provide your personal information",
+  },
+  {
+    id: 2,
+    title: "address information",
+    alt: "please provide current address",
+    desc: "please provide your personal information",
+  },
+  {
+    id: 3,
+    title: "account information",
+    alt: "setup your username and password",
+    desc: "please provide your personal information",
+  },
 ];
+
+const Stepper = ({
+  step,
+  stepList,
+}: {
+  step: number;
+  stepList: StepListType;
+}) => {
+  return (
+    <div className="stepper ">
+      <h1 className="stepper-title">Step {step}</h1>
+      <h2 className="stepper-desc">{stepList[step - 1].alt}</h2>
+      <ul className="mt-4 flex lg:flex-col flex-row gap-8 text-slate-400">
+        {stepList.map((item) => (
+          <li
+            key={item.id}
+            className="step-list"
+            style={step >= item.id ? { color: "white" } : { color: "gray" }}
+          >
+            <p
+              className=" step-number-actived"
+              style={
+                step >= item.id
+                  ? { borderColor: "white" }
+                  : { borderColor: "gray" }
+              }
+            >
+              {item.id}
+            </p>
+            {item.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 function App() {
   const [step, setStep] = useState(1);
+  const [registerData, setRegisterData] = useState<RegsiterDataType>({
+    fullname: "",
+    email: "",
+    dob: "",
+    street: "",
+    city: "",
+    province: "",
+    username: "",
+    password: "",
+  });
 
+  const handleNext = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setStep(step + 1);
+  };
+
+  const handleBack = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setStep(step + 1);
+  };
   return (
     <div className="min-h-screen bg-white flex flex-col lg:flex-row">
       <div className="bg-slate-700 w-full lg:w-1/3 text-white shadow-2xl flex flex-col">
@@ -20,43 +108,32 @@ function App() {
             className="lg:w-[200px] w-[10em] pt-4 pl-4"
           />
         </header>
-        <div className="stepper ">
-          <h1 className="stepper-title">Step 1</h1>
-          <h2 className="stepper-desc">
-            please provide your personal information
-          </h2>
-          <ul className="mt-4 flex lg:flex-col flex-row gap-8 text-slate-400">
-            {stepList.map((step) => (
-              <li
-                key={step.id}
-                className="step-list"
-                style={{ color: "white" }}
-              >
-                <p className=" step-number-actived">{step.id}</p>
-                {step.title}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Stepper step={step} stepList={stepList} />
       </div>
       <div className="regis-container flex flex-col lg:pt-32 pt-12 w-full">
-        {step}
         <div className="step-form">
-          {step === 1 ? (
-            <>
-              <h1 className="form-title ">personal information</h1>
-              <h3 className="form-desc">
-                Masukan alamat lengkap kamu tinggal.
-              </h3>
-              <form action="" className="form-registration mt-10 grid gap-8">
+          {JSON.stringify(registerData)}
+          <h1 className="form-title ">{stepList[step - 1].title}</h1>
+          <h3 className="form-desc">{stepList[step - 1].desc}</h3>
+          <form className="form-registration mt-10 grid gap-8">
+            {step === 1 ? (
+              <>
                 <div className="form-group ">
                   <label htmlFor="fullname" className="text-xl">
                     Full Name
                   </label>
                   <input
-                    className="border-2 border-slate-200 text-xl py-2 px-4 rounded-lg outline-none"
+                    className="input-form"
                     type="text"
                     id="fullanme"
+                    name="fullname"
+                    value={registerData.fullname as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        fullname: e.target.value,
+                      }))
+                    }
                   />
                 </div>
                 <div className="form-group">
@@ -64,87 +141,162 @@ function App() {
                     Email
                   </label>
                   <input
-                    className="border-2 border-slate-200 text-xl py-2 px-4 rounded-lg outline-none"
+                    className="input-form"
                     type="email"
                     id="email"
+                    name="email"
+                    value={registerData.email as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="fullname" className="text-xl">
+                  <label htmlFor="dob" className="text-xl">
                     Date of Birth
                   </label>
                   <input
-                    className="border-2 border-slate-200 text-xl py-2 px-4 rounded-lg outline-none"
+                    className="input-form"
                     type="date"
-                    id="fullanme"
+                    id="dob"
+                    name="dob"
+                    value={registerData.dob as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        dob: e.target.value,
+                      }))
+                    }
                   />
                 </div>
-              </form>
-            </>
-          ) : step === 2 ? (
-            <>
-              {" "}
-              <>
-                <h1 className="form-title ">personal information</h1>
-                <h3 className="form-desc">
-                  Masukan alamat lengkap kamu tinggal.
-                </h3>
-                <form action="" className="form-registration mt-10 grid gap-8">
-                  <div className="form-group ">
-                    <label htmlFor="fullname" className="text-xl">
-                      Full Name
-                    </label>
-                    <input
-                      className="border-2 border-slate-200 text-xl py-2 px-4 rounded-lg outline-none"
-                      type="text"
-                      id="fullanme"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="email" className="text-xl">
-                      Email
-                    </label>
-                    <input
-                      className="border-2 border-slate-200 text-xl py-2 px-4 rounded-lg outline-none"
-                      type="email"
-                      id="email"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="fullname" className="text-xl">
-                      Date of Birth
-                    </label>
-                    <input
-                      className="border-2 border-slate-200 text-xl py-2 px-4 rounded-lg outline-none"
-                      type="date"
-                      id="fullanme"
-                    />
-                  </div>
-                </form>
               </>
-            </>
-          ) : (
-            <p>test</p>
-          )}
-
-          <div className="form-group flex flex-row justify-evenly text-xl pt-16 ">
-            {step >= 2 ? (
-              <button className="back-button" onClick={() => setStep(step - 1)}>
-                back
-              </button>
+            ) : step === 2 ? (
+              <>
+                <div className="form-group ">
+                  <label htmlFor="street" className="text-xl">
+                    street address
+                  </label>
+                  <input
+                    className="input-form"
+                    type="text"
+                    id="street"
+                    name="street"
+                    value={registerData.street as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        street: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="city" className="text-xl">
+                    city
+                  </label>
+                  <input
+                    className="input-form"
+                    type="text"
+                    id="city"
+                    value={registerData.city as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        city: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="province" className="text-xl">
+                    province
+                  </label>
+                  <input
+                    className="input-form"
+                    type="text"
+                    id="province"
+                    name="province"
+                    value={registerData.province as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        province: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              </>
+            ) : step === 3 ? (
+              <>
+                <div className="form-group ">
+                  <label htmlFor="username" className="text-xl">
+                    username
+                  </label>
+                  <input
+                    className="input-form"
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={registerData.username as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        username: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password" className="text-xl">
+                    password
+                  </label>
+                  <input
+                    className="input-form"
+                    type="password"
+                    id="password"
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              </>
             ) : (
-              <button
-                className="text-slate-200"
-                onClick={() => setStep(step - 1)}
-                disabled
-              >
-                back
-              </button>
+              <>
+                <p>final</p>
+              </>
             )}
-            <button className="next-button" onClick={() => setStep(step + 1)}>
-              next
-            </button>
-          </div>
+
+            <div className="button-form-group ">
+              {step === 0 ? (
+                <button className="back-button" onClick={() => handleBack}>
+                  back
+                </button>
+              ) : (
+                <button
+                  className="text-slate-200"
+                  onClick={() => handleBack}
+                  disabled
+                >
+                  kembali
+                </button>
+              )}
+              {step === 3 ? (
+                <button className="next-button" onClick={handleNext}>
+                  next
+                </button>
+              ) : (
+                <button className="next-button" onClick={handleNext}>
+                  next
+                </button>
+              )}
+            </div>
+          </form>
         </div>
       </div>
     </div>

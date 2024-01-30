@@ -42,4 +42,10 @@
   .back-button {
     @apply text-slate-400 hover:text-slate-300 font-semibold transition ease-in-out;
   }
+  .input-form {
+    @apply border-2 border-slate-200 text-xl py-2 px-4 rounded-lg outline-none;
+  }
+  .button-form-group {
+    @apply flex flex-row justify-evenly text-xl pt-16;
+  }
 }
