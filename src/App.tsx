@@ -89,15 +89,26 @@ function App() {
     password: "",
   });
 
-  const handleNext = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setStep(step + 1);
-  };
+  function next() {
+    setStep((i) => {
+      return i + 1;
+    });
+  }
 
-  const handleBack = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function back() {
+    setStep((i) => {
+      if (i <= 0) return i;
+      return i - 1;
+    });
+  }
+  const isFirstStep = step === 0;
+  const isLastStep = step === 3;
+
+  function onSubmit(e: FormEvent) {
     e.preventDefault();
-    setStep(step + 1);
-  };
+    if (!isLastStep) return next();
+    alert(JSON.stringify(registerData));
+  }
   return (
     <div className="min-h-screen bg-white flex flex-col lg:flex-row">
       <div className="bg-slate-700 w-full lg:w-1/3 text-white shadow-2xl flex flex-col">
@@ -115,7 +126,10 @@ function App() {
           {JSON.stringify(registerData)}
           <h1 className="form-title ">{stepList[step - 1].title}</h1>
           <h3 className="form-desc">{stepList[step - 1].desc}</h3>
-          <form className="form-registration mt-10 grid gap-8">
+          <form
+            className="form-registration mt-10 grid gap-8"
+            onSubmit={onSubmit}
+          >
             {step === 1 ? (
               <>
                 <div className="form-group ">
@@ -273,28 +287,16 @@ function App() {
             )}
 
             <div className="button-form-group ">
-              {step === 0 ? (
-                <button className="back-button" onClick={() => handleBack}>
-                  back
-                </button>
-              ) : (
-                <button
-                  className="text-slate-200"
-                  onClick={() => handleBack}
-                  disabled
-                >
-                  kembali
+              {step}
+              {!isFirstStep && (
+                <button className="back-button" onClick={back}>
+                  Back
                 </button>
               )}
-              {step === 3 ? (
-                <button className="next-button" onClick={handleNext}>
-                  next
-                </button>
-              ) : (
-                <button className="next-button" onClick={handleNext}>
-                  next
-                </button>
-              )}
+
+              <button className="next-button">
+                {isLastStep ? "Finish" : "Next"}
+              </button>
             </div>
           </form>
         </div>
