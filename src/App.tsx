@@ -1,6 +1,9 @@
 import { useState } from "react";
 import logo from "./assets/FA_DIGICAMP_LOGO_WHITE.png";
 import { StepListType, RegsiterDataType, stepList } from "./utils";
+import Welcome from "./components/Welcome";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Stepper = ({
   step,
@@ -40,15 +43,16 @@ const Stepper = ({
 
 function App() {
   const [step, setStep] = useState(1);
+  
   const [registerData, setRegisterData] = useState<RegsiterDataType>({
-    fullname: "",
-    email: "",
-    dob: "",
-    street: "",
-    city: "",
-    province: "",
-    username: "",
-    password: "",
+    fullname: "Morgan Premier",
+    email: "morgan@email.com",
+    dob: "24/01/2012",
+    street: "the fourth avenue, gillian hill, sukoharjo",
+    city: "wonosobo",
+    province: "jawa barat",
+    username: "test",
+    password: "test",
   });
 
   function next() {
@@ -66,7 +70,7 @@ function App() {
   const isFirstStep = step === 1;
   const isLastStep = step === 3;
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLastStep) return next();
     alert(JSON.stringify(registerData));
@@ -249,11 +253,28 @@ function App() {
                     }
                     required
                   />
+                  <div className="form-group">
+                  <label htmlFor="password" className="text-xl">
+                    reenter password
+                  </label>
+                  <input
+                    className="input-form"
+                    type="password"
+                    id="password"
+                    value={registerData.password as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
+                    required
+                  />
                 </div>
               </>
             ) : (
               <>
-                <p>final</p>
+                <Welcome registerData={registerData} />
               </>
             )}
 
