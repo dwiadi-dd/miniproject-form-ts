@@ -148,6 +148,7 @@ function App() {
                         fullname: e.target.value,
                       }))
                     }
+                    required
                   />
                 </div>
                 <div className="form-group">
@@ -166,6 +167,7 @@ function App() {
                         email: e.target.value,
                       }))
                     }
+                    required
                   />
                 </div>
                 <div className="form-group">
@@ -184,6 +186,7 @@ function App() {
                         dob: e.target.value,
                       }))
                     }
+                    required
                   />
                 </div>
               </>
@@ -205,6 +208,7 @@ function App() {
                         street: e.target.value,
                       }))
                     }
+                    required
                   />
                 </div>
                 <div className="form-group">
@@ -222,6 +226,7 @@ function App() {
                         city: e.target.value,
                       }))
                     }
+                    required
                   />
                 </div>
                 <div className="form-group">
@@ -240,6 +245,7 @@ function App() {
                         province: e.target.value,
                       }))
                     }
+                    required
                   />
                 </div>
               </>
@@ -261,6 +267,7 @@ function App() {
                         username: e.target.value,
                       }))
                     }
+                    required
                   />
                 </div>
                 <div className="form-group">
@@ -277,6 +284,7 @@ function App() {
                         password: e.target.value,
                       }))
                     }
+                    required
                   />
                 </div>
               </>
