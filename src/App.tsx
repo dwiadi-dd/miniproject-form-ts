@@ -1,9 +1,13 @@
 import { useState } from "react";
 import logo from "./assets/FA_DIGICAMP_LOGO_WHITE.png";
-import { StepListType, RegsiterDataType, stepList } from "./utils";
+import {
+  StepListType,
+  RegsiterDataType,
+  stepList,
+  ListOfCity,
+  ListOfProvinsi,
+} from "./utils";
 import Welcome from "./components/Welcome";
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 const Stepper = ({
   step,
@@ -43,17 +47,20 @@ const Stepper = ({
 
 function App() {
   const [step, setStep] = useState(1);
-  
+  const [city, setCity] = useState("");
+  const [province, setProvince] = useState("banten");
+  const [isSuccess, setIsSuccess] = useState(false);
   const [registerData, setRegisterData] = useState<RegsiterDataType>({
-    fullname: "Morgan Premier",
-    email: "morgan@email.com",
-    dob: "24/01/2012",
-    street: "the fourth avenue, gillian hill, sukoharjo",
-    city: "wonosobo",
-    province: "jawa barat",
-    username: "test",
-    password: "test",
+    fullname: "test",
+    email: "test@test.com",
+    dob: "",
+    street: "",
+    city: "",
+    province: "banten",
+    username: "",
+    password: "",
   });
+  const [valid, setValid] = useState("");
 
   function next() {
     setStep((i) => {
@@ -73,7 +80,9 @@ function App() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLastStep) return next();
-    alert(JSON.stringify(registerData));
+    if (isLastStep && valid.length >= 1) return;
+    next();
+    setIsSuccess(true);
   };
   return (
     <div className="min-h-screen bg-white flex flex-col lg:flex-row">
@@ -89,7 +98,12 @@ function App() {
       </div>
       <div className="regis-container flex flex-col lg:pt-32 pt-12 w-full">
         <div className="step-form">
-          {JSON.stringify(registerData)}
+          {isSuccess ? (
+            <>
+              <Welcome registerData={registerData} />
+            </>
+          ) : null}
+
           <h1 className="form-title ">{stepList[step - 1].title}</h1>
           <h3 className="form-desc">{stepList[step - 1].desc}</h3>
           <form
@@ -114,6 +128,8 @@ function App() {
                         fullname: e.target.value,
                       }))
                     }
+                    pattern=".{4,}"
+                    title="Name Must be 4 Characters or longer"
                     required
                   />
                 </div>
@@ -133,6 +149,7 @@ function App() {
                         email: e.target.value,
                       }))
                     }
+                    title="please provide valid email adress"
                     required
                   />
                 </div>
@@ -178,30 +195,11 @@ function App() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="city" className="text-xl">
-                    city
-                  </label>
-                  <input
-                    className="input-form"
-                    type="text"
-                    id="city"
-                    value={registerData.city as string}
-                    onChange={(e) =>
-                      setRegisterData((prev) => ({
-                        ...prev,
-                        city: e.target.value,
-                      }))
-                    }
-                    required
-                  />
-                </div>
-                <div className="form-group">
                   <label htmlFor="province" className="text-xl">
                     province
                   </label>
-                  <input
+                  <select
                     className="input-form"
-                    type="text"
                     id="province"
                     name="province"
                     value={registerData.province as string}
@@ -212,7 +210,36 @@ function App() {
                       }))
                     }
                     required
-                  />
+                  >
+                    {" "}
+                    {ListOfProvinsi.map((option, index) => (
+                      <option key={index} value={option.value}>
+                        {option.provinsi}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="province" className="text-xl">
+                    City
+                  </label>
+                  <select
+                    className="input-form"
+                    id="province"
+                    name="province"
+                    value={registerData.city as string}
+                    onChange={(e) =>
+                      setRegisterData((prev) => ({
+                        ...prev,
+                        city: e.target.value,
+                      }))
+                    }
+                    required
+                  >
+                    {ListOfCity[registerData.province]?.map((option) => (
+                      <option>{option.kota}</option>
+                    ))}
+                  </select>
                 </div>
               </>
             ) : step === 3 ? (
@@ -253,34 +280,30 @@ function App() {
                     }
                     required
                   />
-                  <div className="form-group">
-                  <label htmlFor="password" className="text-xl">
+                </div>
+                <div className="form-group">
+                  <label htmlFor="reenter" className="text-xl">
                     reenter password
                   </label>
                   <input
                     className="input-form"
-                    type="password"
-                    id="password"
-                    value={registerData.password as string}
-                    onChange={(e) =>
-                      setRegisterData((prev) => ({
-                        ...prev,
-                        password: e.target.value,
-                      }))
-                    }
-                    required
+                    type="text"
+                    id="reenter"
+                    name="reenter"
+                    onBlur={(e) => {
+                      e.target.value !== registerData.password
+                        ? setValid("pass not valid")
+                        : setValid("");
+                    }}
                   />
+                  <p className="text-red-400">{valid}</p>
                 </div>
               </>
             ) : (
-              <>
-                <Welcome registerData={registerData} />
-              </>
+              <p>-</p>
             )}
 
             <div className="button-form-group ">
-              {step}
-
               <button
                 className="back-button"
                 onClick={back}

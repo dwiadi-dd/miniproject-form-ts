@@ -4,7 +4,7 @@
 
 @layer components {
   .stepper {
-    @apply lg:mt-20 lg:mx-auto mx-auto border-2 border-sky-100 px-10 pt-10 pb-8;
+    @apply lg:mt-20 lg:mx-auto mx-auto   px-10 pt-10 pb-8;
   }
   .stepper-desc {
     @apply mt-2 text-lg font-light tracking-widest;
@@ -13,7 +13,7 @@
     @apply lg:text-4xl text-2xl font-semibold;
   }
   .step-form {
-    @apply border-2 border-amber-600 lg:w-3/6 w-3/4 lg:mx-0 mx-auto  lg:pl-[4em];
+    @apply lg:w-3/6 w-3/4 lg:mx-0 mx-auto  lg:pl-[4em];
   }
   .step-list {
     @apply flex  lg:flex-row flex-col items-center lg:gap-4 gap-2 lg:text-xl lg:text-left text-center text-base font-light capitalize;
