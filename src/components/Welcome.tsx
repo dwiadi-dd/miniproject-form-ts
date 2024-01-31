@@ -1,11 +1,11 @@
-import { RegsiterDataType } from "../utils";
+import { RegsiterDataTypeObject } from "../utils";
 import avatar from "../assets/avatar.png";
 
-export default function Welcome({ registerData }: RegsiterDataType) {
+export default function Welcome({ registerData }: RegsiterDataTypeObject) {
   const { fullname, email, dob, province, street, city } = registerData;
 
   return (
-    <div className=" flex flex-col">
+    <div className=" flex flex-col mx-auto">
       <h1 className="text-center text-4xl font-semibold tracking-widest">
         Welcome to Kotlek {fullname}!
       </h1>
@@ -34,7 +34,7 @@ export default function Welcome({ registerData }: RegsiterDataType) {
             {street}, {city}, {province}
           </p>
         </div>{" "}
-        <button className="next-button w-1/4 my-4 mx-auto">Finalize</button>
+        <button className="next-button w-[100px] my-4 mx-auto">Finalize</button>
       </div>
     </div>
   );

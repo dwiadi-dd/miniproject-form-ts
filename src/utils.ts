@@ -16,6 +16,10 @@ export type RegsiterDataType = {
   password: string | null;
 };
 
+export type RegsiterDataTypeObject = {
+  registerData: RegsiterDataType;
+};
+
 export const stepList = [
   {
     id: 1,
