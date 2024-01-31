@@ -2,12 +2,13 @@ import { RegsiterDataTypeObject } from "../utils";
 import avatar from "../assets/avatar.png";
 
 export default function Welcome({ registerData }: RegsiterDataTypeObject) {
-  const { fullname, email, dob, province, street, city } = registerData;
+  const { fullname, email, dob, province, street, city, username } =
+    registerData;
 
   return (
     <div className=" flex flex-col mx-auto">
       <h1 className="text-center text-4xl font-semibold tracking-widest">
-        Welcome to Kotlek {fullname}!
+        Welcome to Kotlek {username}!
       </h1>
       <img
         src={avatar}

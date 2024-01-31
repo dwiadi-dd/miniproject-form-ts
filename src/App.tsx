@@ -50,8 +50,8 @@ function App() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [valid, setValid] = useState("");
   const [registerData, setRegisterData] = useState<RegsiterDataType>({
-    fullname: "test",
-    email: "test@test.com",
+    fullname: "",
+    email: "",
     dob: "",
     street: "",
     city: "",
@@ -80,6 +80,7 @@ function App() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLastStep) return next();
+    if (isLastStep && valid.length >= 1) return;
     setIsSuccess(true);
   };
   return (
@@ -95,6 +96,7 @@ function App() {
         <Stepper step={step} stepList={stepList} />
       </div>
       <div className="regis-container flex flex-col lg:pt-32 pt-12 w-full">
+        {JSON.stringify(registerData)}
         {isSuccess ? (
           <>
             <Welcome registerData={registerData} />
@@ -206,9 +208,14 @@ function App() {
                           province: e.target.value,
                         }))
                       }
+                      onBlur={(e) =>
+                        setRegisterData((prev) => ({
+                          ...prev,
+                          province: e.target.value,
+                        }))
+                      }
                       required
                     >
-                      {" "}
                       {ListOfProvinsi.map((option, index) => (
                         <option key={index} value={option.value}>
                           {option.provinsi}
@@ -217,15 +224,21 @@ function App() {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label htmlFor="province" className="label-input">
+                    <label htmlFor="city" className="label-input">
                       City
                     </label>
                     <select
                       className="input-form"
-                      id="province"
-                      name="province"
+                      id="city"
+                      name="city"
                       value={registerData.city as string}
                       onChange={(e) =>
+                        setRegisterData((prev) => ({
+                          ...prev,
+                          city: e.target.value,
+                        }))
+                      }
+                      onBlur={(e) =>
                         setRegisterData((prev) => ({
                           ...prev,
                           city: e.target.value,
@@ -234,7 +247,7 @@ function App() {
                       required
                     >
                       {ListOfCity[registerData.province]?.map((option) => (
-                        <option key={option.kota}>{option.kota}</option>
+                        <option value={option.kota}>{option.kota}</option>
                       ))}
                     </select>
                   </div>
