@@ -1,49 +1,13 @@
 import { useState } from "react";
 import logo from "./assets/FA_DIGICAMP_LOGO_WHITE.png";
 import {
-  StepListType,
   RegsiterDataType,
   stepList,
   ListOfCity,
   ListOfProvinsi,
 } from "./utils";
 import Welcome from "./components/Welcome";
-
-const Stepper = ({
-  step,
-  stepList,
-}: {
-  step: number;
-  stepList: StepListType;
-}) => {
-  return (
-    <div className="stepper ">
-      <h1 className="stepper-title">Step {step + 1}</h1>
-      <h2 className="stepper-desc">{stepList[step].alt}</h2>
-      <ul className="mt-4 flex lg:flex-col flex-row gap-8 text-slate-400">
-        {stepList.map((item, i) => (
-          <li
-            key={item.id}
-            className="step-list"
-            style={step >= i ? { color: "white" } : { color: "#64748b" }}
-          >
-            <p
-              className=" step-number-actived"
-              style={
-                step >= i
-                  ? { borderColor: "white" }
-                  : { borderColor: "#64748b" }
-              }
-            >
-              {item.id}
-            </p>
-            {item.title}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+import Stepper from "./components/Stepper";
 
 function App() {
   const [step, setStep] = useState(0);
@@ -52,7 +16,7 @@ function App() {
   const [registerData, setRegisterData] = useState<RegsiterDataType>({
     fullname: "",
     email: "",
-    dob: "",
+    dob: "2004-01-01",
     street: "",
     city: "",
     province: "banten",
@@ -93,10 +57,15 @@ function App() {
             className="lg:w-[200px] w-[10em] pt-4 pl-4"
           />
         </header>
-        <Stepper step={step} stepList={stepList} />
+        {isSuccess ? (
+          <p className="mx-auto stepper-desc text-2xl font-semibold lg:pt-48 pt-8 h-[4em]">
+            Registration Complete
+          </p>
+        ) : (
+          <Stepper step={step} stepList={stepList} />
+        )}
       </div>
       <div className="regis-container flex flex-col lg:pt-32 pt-12 w-full">
-        {JSON.stringify(registerData)}
         {isSuccess ? (
           <>
             <Welcome registerData={registerData} />
@@ -127,7 +96,7 @@ function App() {
                           fullname: e.target.value,
                         }))
                       }
-                      pattern=".{4,}"
+                      pattern=".{5,}"
                       title="Name Must be 4 Characters or longer"
                       required
                     />
@@ -168,8 +137,10 @@ function App() {
                           dob: e.target.value,
                         }))
                       }
+                      max="2006-01-01"
                       required
                     />
+                    <p className="text-red-400">{"\u00A0"}</p>
                   </div>
                 </>
               ) : step === 1 ? (
@@ -190,6 +161,8 @@ function App() {
                           street: e.target.value,
                         }))
                       }
+                      pattern=".{10,}"
+                      title="address street Must be 10 Characters or longer"
                       required
                     />
                   </div>
@@ -250,6 +223,7 @@ function App() {
                         <option value={option.kota}>{option.kota}</option>
                       ))}
                     </select>
+                    <p className="text-red-400">{"\u00A0"}</p>
                   </div>
                 </>
               ) : step === 2 ? (
@@ -270,6 +244,8 @@ function App() {
                           username: e.target.value,
                         }))
                       }
+                      pattern=".{6,}"
+                      title="username Must be 10 Characters or longer"
                       required
                     />
                   </div>
@@ -288,6 +264,8 @@ function App() {
                           password: e.target.value,
                         }))
                       }
+                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                      title="Must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:"
                       required
                     />
                   </div>
@@ -297,7 +275,7 @@ function App() {
                     </label>
                     <input
                       className="input-form"
-                      type="text"
+                      type="password"
                       id="reenter"
                       name="reenter"
                       onBlur={(e) => {
@@ -306,13 +284,14 @@ function App() {
                           : setValid("");
                       }}
                     />
-                    <p className="text-red-400">{valid}</p>
+                    <p className="text-red-400">
+                      {valid.length >= 1 ? valid : "\u00A0"}
+                    </p>
                   </div>
                 </>
               ) : (
                 <p>-</p>
               )}
-              {step}
               <div className="button-form-group ">
                 <button
                   className="back-button"
