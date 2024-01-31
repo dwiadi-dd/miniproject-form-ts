@@ -1,44 +1,6 @@
 import { useState } from "react";
 import logo from "./assets/FA_DIGICAMP_LOGO_WHITE.png";
-
-type StepListType = {
-  id: number;
-  title: string;
-  alt: string;
-  desc: string;
-}[];
-
-type RegsiterDataType = {
-  fullname: string | null;
-  email: string | null;
-  dob: string | null;
-  street: string | null;
-  city: string | null;
-  province: string | null;
-  username: string | null;
-  password: string | null;
-};
-
-const stepList = [
-  {
-    id: 1,
-    title: "personal information",
-    alt: "please provide your personal information",
-    desc: "please provide your personal information",
-  },
-  {
-    id: 2,
-    title: "address information",
-    alt: "please provide current address",
-    desc: "please provide your personal information",
-  },
-  {
-    id: 3,
-    title: "account information",
-    alt: "setup your username and password",
-    desc: "please provide your personal information",
-  },
-];
+import { StepListType, RegsiterDataType, stepList } from "./utils";
 
 const Stepper = ({
   step,
@@ -97,18 +59,18 @@ function App() {
 
   function back() {
     setStep((i) => {
-      if (i <= 0) return i;
+      if (i <= 1) return i;
       return i - 1;
     });
   }
-  const isFirstStep = step === 0;
+  const isFirstStep = step === 1;
   const isLastStep = step === 3;
 
-  function onSubmit(e: FormEvent) {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!isLastStep) return next();
     alert(JSON.stringify(registerData));
-  }
+  };
   return (
     <div className="min-h-screen bg-white flex flex-col lg:flex-row">
       <div className="bg-slate-700 w-full lg:w-1/3 text-white shadow-2xl flex flex-col">
@@ -278,6 +240,7 @@ function App() {
                     className="input-form"
                     type="password"
                     id="password"
+                    value={registerData.password as string}
                     onChange={(e) =>
                       setRegisterData((prev) => ({
                         ...prev,
@@ -296,11 +259,14 @@ function App() {
 
             <div className="button-form-group ">
               {step}
-              {!isFirstStep && (
-                <button className="back-button" onClick={back}>
-                  Back
-                </button>
-              )}
+
+              <button
+                className="back-button"
+                onClick={back}
+                disabled={isFirstStep}
+              >
+                Back
+              </button>
 
               <button className="next-button">
                 {isLastStep ? "Finish" : "Next"}
