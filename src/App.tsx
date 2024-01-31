@@ -18,21 +18,21 @@ const Stepper = ({
 }) => {
   return (
     <div className="stepper ">
-      <h1 className="stepper-title">Step {step}</h1>
-      <h2 className="stepper-desc">{stepList[step - 1].alt}</h2>
+      <h1 className="stepper-title">Step {step + 1}</h1>
+      <h2 className="stepper-desc">{stepList[step].alt}</h2>
       <ul className="mt-4 flex lg:flex-col flex-row gap-8 text-slate-400">
-        {stepList.map((item) => (
+        {stepList.map((item, i) => (
           <li
             key={item.id}
             className="step-list"
-            style={step >= item.id ? { color: "white" } : { color: "gray" }}
+            style={step >= i ? { color: "white" } : { color: "#64748b" }}
           >
             <p
               className=" step-number-actived"
               style={
-                step >= item.id
+                step >= i
                   ? { borderColor: "white" }
-                  : { borderColor: "gray" }
+                  : { borderColor: "#64748b" }
               }
             >
               {item.id}
@@ -46,7 +46,7 @@ const Stepper = ({
 };
 
 function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("banten");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -62,25 +62,25 @@ function App() {
   });
   const [valid, setValid] = useState("");
 
+  const isFirstStep = step === 0;
+  const isLastStep = step === stepList.length - 1;
   function next() {
     setStep((i) => {
+      if (i >= stepList.length - 1) return i;
       return i + 1;
     });
   }
 
   function back() {
     setStep((i) => {
-      if (i <= 1) return i;
+      if (i <= 0) return i;
       return i - 1;
     });
   }
-  const isFirstStep = step === 1;
-  const isLastStep = step === 3;
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLastStep) return next();
-    if (isLastStep && valid.length >= 1) return;
     setIsSuccess(true);
   };
   return (
@@ -102,16 +102,16 @@ function App() {
           </>
         ) : (
           <div className="step-form">
-            <h1 className="form-title ">{stepList[step - 1].title}</h1>
-            <h3 className="form-desc">{stepList[step - 1].desc}</h3>
+            <h1 className="form-title ">{stepList[step].title}</h1>
+            <h3 className="form-desc">{stepList[step].desc}</h3>
             <form
               className="form-registration mt-10 grid gap-8"
               onSubmit={onSubmit}
             >
-              {step === 1 ? (
+              {step === 0 ? (
                 <>
                   <div className="form-group ">
-                    <label htmlFor="fullname" className="text-xl">
+                    <label htmlFor="fullname" className="">
                       Full Name
                     </label>
                     <input
@@ -171,7 +171,7 @@ function App() {
                     />
                   </div>
                 </>
-              ) : step === 2 ? (
+              ) : step === 1 ? (
                 <>
                   <div className="form-group ">
                     <label htmlFor="street" className="text-xl">
@@ -240,7 +240,7 @@ function App() {
                     </select>
                   </div>
                 </>
-              ) : step === 3 ? (
+              ) : step === 2 ? (
                 <>
                   <div className="form-group ">
                     <label htmlFor="username" className="text-xl">
@@ -300,14 +300,15 @@ function App() {
               ) : (
                 <p>-</p>
               )}
-
+              {step}
               <div className="button-form-group ">
                 <button
                   className="back-button"
                   onClick={back}
-                  disabled={isFirstStep}
+                  type="button"
+                  hidden={isFirstStep}
                 >
-                  Back
+                  {isLastStep ? "back" : "balik"}
                 </button>
 
                 <button className="next-button">
