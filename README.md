@@ -2,10 +2,10 @@
 
 ### Run Project
 
-Clone this repository
-Open CMD
-Type npm i
-Type npm start
+- Clone this repository
+- Open CMD
+- Type npm i
+- Type npm start
 
 
 ### Library Used
