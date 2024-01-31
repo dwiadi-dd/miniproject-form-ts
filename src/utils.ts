@@ -11,7 +11,7 @@ export type RegsiterDataType = {
   dob: string | null;
   street: string | null;
   city: string | null;
-  province: string | null;
+  province: string;
   username: string | null;
   password: string | null;
 };
@@ -19,6 +19,14 @@ export type RegsiterDataType = {
 export type RegsiterDataTypeObject = {
   registerData: RegsiterDataType;
 };
+
+interface City {
+  kota: string;
+}
+
+interface CityList {
+  [region: string]: City[];
+}
 
 export const stepList = [
   {
@@ -49,7 +57,7 @@ export const ListOfProvinsi = [
   { provinsi: "Jawa Timur", value: "jatim" },
 ];
 
-export const ListOfCity = {
+export const ListOfCity: CityList = {
   jatim: [
     { kota: "Bangkalan" },
     { kota: "Banyuwangi" },

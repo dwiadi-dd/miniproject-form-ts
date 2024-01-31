@@ -47,9 +47,8 @@ const Stepper = ({
 
 function App() {
   const [step, setStep] = useState(0);
-  const [city, setCity] = useState("");
-  const [province, setProvince] = useState("banten");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [valid, setValid] = useState("");
   const [registerData, setRegisterData] = useState<RegsiterDataType>({
     fullname: "test",
     email: "test@test.com",
@@ -60,23 +59,23 @@ function App() {
     username: "",
     password: "",
   });
-  const [valid, setValid] = useState("");
 
   const isFirstStep = step === 0;
   const isLastStep = step === stepList.length - 1;
-  function next() {
+
+  const next = () => {
     setStep((i) => {
       if (i >= stepList.length - 1) return i;
       return i + 1;
     });
-  }
+  };
 
-  function back() {
+  const back = () => {
     setStep((i) => {
       if (i <= 0) return i;
       return i - 1;
     });
-  }
+  };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,7 +110,7 @@ function App() {
               {step === 0 ? (
                 <>
                   <div className="form-group ">
-                    <label htmlFor="fullname" className="">
+                    <label htmlFor="fullname" className="label-input">
                       Full Name
                     </label>
                     <input
@@ -132,7 +131,7 @@ function App() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="email" className="text-xl">
+                    <label htmlFor="email" className="label-input">
                       Email
                     </label>
                     <input
@@ -152,7 +151,7 @@ function App() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="dob" className="text-xl">
+                    <label htmlFor="dob" className="label-input">
                       Date of Birth
                     </label>
                     <input
@@ -174,7 +173,7 @@ function App() {
               ) : step === 1 ? (
                 <>
                   <div className="form-group ">
-                    <label htmlFor="street" className="text-xl">
+                    <label htmlFor="street" className="label-input">
                       street address
                     </label>
                     <input
@@ -193,7 +192,7 @@ function App() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="province" className="text-xl">
+                    <label htmlFor="province" className="label-input">
                       province
                     </label>
                     <select
@@ -218,7 +217,7 @@ function App() {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label htmlFor="province" className="text-xl">
+                    <label htmlFor="province" className="label-input">
                       City
                     </label>
                     <select
@@ -235,7 +234,7 @@ function App() {
                       required
                     >
                       {ListOfCity[registerData.province]?.map((option) => (
-                        <option>{option.kota}</option>
+                        <option key={option.kota}>{option.kota}</option>
                       ))}
                     </select>
                   </div>
@@ -243,7 +242,7 @@ function App() {
               ) : step === 2 ? (
                 <>
                   <div className="form-group ">
-                    <label htmlFor="username" className="text-xl">
+                    <label htmlFor="username" className="label-input">
                       username
                     </label>
                     <input
@@ -262,7 +261,7 @@ function App() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="password" className="text-xl">
+                    <label htmlFor="password" className="label-input">
                       password
                     </label>
                     <input
@@ -280,7 +279,7 @@ function App() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="reenter" className="text-xl">
+                    <label htmlFor="reenter" className="label-input">
                       reenter password
                     </label>
                     <input
@@ -306,9 +305,9 @@ function App() {
                   className="back-button"
                   onClick={back}
                   type="button"
-                  hidden={isFirstStep}
+                  disabled={isFirstStep}
                 >
-                  {isLastStep ? "back" : "balik"}
+                  back
                 </button>
 
                 <button className="next-button">

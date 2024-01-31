@@ -11,7 +11,7 @@ export default function Welcome({ registerData }: RegsiterDataTypeObject) {
       </h1>
       <img
         src={avatar}
-        className="rounded-xl w-[200px] rounded-full mx-auto my-8"
+        className=" w-[200px] rounded-full mx-auto my-8"
         alt=""
       />
       <p className="font-light"></p>

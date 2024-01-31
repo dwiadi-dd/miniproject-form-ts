@@ -48,4 +48,7 @@
   .button-form-group {
     @apply flex flex-row justify-evenly text-xl pt-16;
   }
+  .label-input {
+    @apply text-xl capitalize text-slate-400 tracking-wide;
+  }
 }
