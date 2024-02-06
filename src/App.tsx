@@ -18,6 +18,7 @@ function App() {
     email: "",
     dob: "2004-01-01",
     street: "",
+    zipcode: "",
     city: "",
     province: "banten",
     username: "",
@@ -224,6 +225,27 @@ function App() {
                       ))}
                     </select>
                     <p className="text-red-400">{"\u00A0"}</p>
+                  </div>
+                  <div className="form-group ">
+                    <label htmlFor="zipcode" className="label-input">
+                      zipcode
+                    </label>
+                    <input
+                      className="input-form"
+                      type="text"
+                      id="zipcode"
+                      name="zipcode"
+                      value={registerData.zipcode as string}
+                      onChange={(e) =>
+                        setRegisterData((prev) => ({
+                          ...prev,
+                          zipcode: e.target.value,
+                        }))
+                      }
+                      pattern="[0-9]{1,5}"
+                      title="address zipcode Must be 5 Characters or longer"
+                      required
+                    />
                   </div>
                 </>
               ) : step === 2 ? (

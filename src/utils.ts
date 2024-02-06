@@ -10,6 +10,7 @@ export type RegsiterDataType = {
   email: string | null;
   dob: string | null;
   street: string | null;
+  zipcode: string | null;
   city: string | null;
   province: string;
   username: string | null;
